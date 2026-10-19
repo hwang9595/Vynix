@@ -1,0 +1,101 @@
+:root {
+  --bg: #0f0f14; --card: #1a1a24; --text: #f2f2f7;
+  --muted: #8b8b99; --accent: #7c5cff; --danger: #ff5c7c;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: system-ui, sans-serif; padding-bottom: 90px;
+}
+a { color: var(--accent); text-decoration: none; }
+.muted { color: var(--muted); }
+.container { max-width: 1000px; margin: 0 auto; padding: 16px; }
+
+.topbar {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px 24px; background: var(--card);
+}
+.topbar nav { display: flex; align-items: center; gap: 14px; }
+.logo { font-size: 22px; font-weight: 700; color: var(--text); }
+.btn {
+  background: var(--accent); color: #fff; border: 0; border-radius: 8px;
+  padding: 8px 14px; cursor: pointer;
+}
+form.inline { display: inline; }
+.link {
+  background: none; border: 0; color: var(--accent); cursor: pointer;
+  padding: 0; font-size: inherit;
+}
+.link.danger { color: var(--danger); }
+
+.search {
+  width: 100%; padding: 12px 16px; border-radius: 10px; border: 0;
+  background: var(--card); color: var(--text); font-size: 16px;
+}
+
+/* Карточки треков */
+.track-list { display: flex; flex-direction: column; gap: 8px; margin: 12px 0; }
+.track-card {
+  display: flex; align-items: center; gap: 12px; cursor: pointer;
+  background: var(--card); border-radius: 10px; padding: 8px 12px;
+}
+.track-card:hover { outline: 1px solid var(--accent); }
+.track-card.playing { background: #2a2447; }
+.track-card img { width: 52px; height: 52px; border-radius: 8px; object-fit: cover; }
+.track-card .info { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.track-card .info span { color: var(--muted); font-size: 14px; }
+.add-btn, .remove-form button {
+  background: none; border: 1px solid var(--muted); color: var(--text);
+  border-radius: 50%; width: 32px; height: 32px; cursor: pointer;
+}
+
+/* Слайдер */
+.slider { position: relative; }
+.slider-track {
+  display: flex; gap: 14px; overflow-x: auto;
+  scroll-snap-type: x mandatory; scrollbar-width: none; padding: 4px;
+}
+.slider-track::-webkit-scrollbar { display: none; }
+.slider-track .track-card {
+  flex: 0 0 180px; flex-direction: column; align-items: stretch;
+  scroll-snap-align: start; padding: 10px;
+}
+.slider-track .track-card img { width: 100%; height: 160px; }
+.slider-btn {
+  position: absolute; top: 40%; z-index: 2; width: 36px; height: 36px;
+  border-radius: 50%; border: 0; background: rgba(0,0,0,.7); color: #fff;
+  font-size: 22px; cursor: pointer;
+}
+.slider-btn.prev { left: -8px; }
+.slider-btn.next { right: -8px; }
+
+/* Плейлисты и формы */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 14px; }
+.playlist-card {
+  background: var(--card); border-radius: 12px; padding: 14px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.actions { display: flex; gap: 12px; margin-top: 6px; }
+.form p { display: flex; flex-direction: column; gap: 4px; }
+.form input, .form textarea {
+  padding: 10px; border-radius: 8px; border: 0;
+  background: var(--card); color: var(--text);
+}
+
+/* Плеер снизу */
+.player {
+  position: fixed; bottom: 0; left: 0; right: 0; height: 76px;
+  background: #16161f; border-top: 1px solid #2a2a38;
+  display: flex; align-items: center; gap: 14px; padding: 0 20px;
+}
+.p-cover { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; background: var(--card); }
+.p-meta { display: flex; flex-direction: column; width: 200px; overflow: hidden; }
+.p-meta span { color: var(--muted); font-size: 13px; }
+.p-controls button { background: none; border: 0; color: var(--text); font-size: 22px; cursor: pointer; }
+#p-seek { flex: 1; }
+#p-vol { width: 90px; }
+
+@media (max-width: 640px) {
+  #p-vol, #p-time { display: none; }
+  .p-meta { width: 110px; }
+}

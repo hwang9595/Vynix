@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>{% if playlist %}Редактирование: {{ playlist.name }}{% else %}Новый плейлист{% endif %}</h1>
+  <form method="post" class="form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button class="btn">Сохранить</button>
+  </form>
+{% endblock %}

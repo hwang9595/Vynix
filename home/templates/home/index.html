@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <input id="search-input" class="search" type="search"
+         data-url="{% url 'player:search_api' %}"
+         placeholder="Найти трек или исполнителя…">
+  <div id="search-results" class="track-list"></div>
+
+  <h2>Популярное на этой неделе</h2>
+  <div class="slider">
+    <button class="slider-btn prev">‹</button>
+    <div class="slider-track">
+      {% for t in popular %}
+        <div class="track-card"
+             data-id="{{ t.id }}" data-title="{{ t.title }}" data-artist="{{ t.artist }}"
+             data-album="{{ t.album }}" data-cover="{{ t.cover }}" data-audio="{{ t.audio }}"
+             data-duration="{{ t.duration }}">
+          <img src="{{ t.cover }}" alt="" loading="lazy">
+          <div class="info"><b>{{ t.title }}</b><span>{{ t.artist }}</span></div>
+        </div>
+      {% empty %}
+        <p class="muted">Не удалось загрузить популярное. Проверь ключ Jamendo.</p>
+      {% endfor %}
+    </div>
+    <button class="slider-btn next">›</button>
+  </div>
+
+  <h2>Мои плейлисты</h2>
+  {% if user.is_authenticated %}
+    <div class="grid">
+      {% for p in playlists %}
+        <div class="playlist-card">
+          <a href="{% url 'player:playlist_detail' p.pk %}"><b>{{ p.name }}</b></a>
+          <span class="muted">{{ p.tracks.count }} треков</span>
+          <div class="actions">
+            <a href="{% url 'player:playlist_edit' p.pk %}">Изменить</a>
+            <form method="post" action="{% url 'player:playlist_delete' p.pk %}"
+                  onsubmit="return confirm('Удалить плейлист?')">
+              {% csrf_token %}
+              <button class="link danger">Удалить</button>
+            </form>
+          </div>
+        </div>
+      {% empty %}
+        <p class="muted">Плейлистов пока нет. Нажми «+ Плейлист».</p>
+      {% endfor %}
+    </div>
+  {% else %}
+    <p class="muted"><a href="{% url 'users:login' %}">Войди</a>, чтобы создавать плейлисты.</p>
+  {% endif %}
+{% endblock %}

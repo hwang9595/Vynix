@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>{{ playlist.name }}</h1>
+  <p class="muted">{{ playlist.description }}</p>
+  {% if is_owner %}
+    <a href="{% url 'player:playlist_edit' playlist.pk %}">Изменить карточку</a>
+  {% endif %}
+
+  <h2>Треки</h2>
+  <div class="track-list">
+    {% for t in tracks %}
+      <div class="track-card"
+           data-id="{{ t.jamendo_id }}" data-title="{{ t.title }}" data-artist="{{ t.artist }}"
+           data-album="{{ t.album }}" data-cover="{{ t.cover }}" data-audio="{{ t.audio_url }}"
+           data-duration="{{ t.duration }}">
+        <img src="{{ t.cover }}" alt="" loading="lazy">
+        <div class="info"><b>{{ t.title }}</b><span>{{ t.artist }}</span></div>
+        {% if is_owner %}
+          <form class="remove-form" method="post"
+                action="{% url 'player:playlist_remove' playlist.pk t.pk %}">
+            {% csrf_token %}
+            <button title="Убрать из плейлиста">✕</button>
+          </form>
+        {% endif %}
+      </div>
+    {% empty %}
+      <p class="muted">Плейлист пуст.</p>
+    {% endfor %}
+  </div>
+
+  {% if is_owner %}
+    <h2>Добавить треки</h2>
+    <input id="search-input" class="search" type="search"
+           data-url="{% url 'player:search_api' %}"
+           data-add-url="{% url 'player:playlist_add' playlist.pk %}"
+           placeholder="Найти трек…">
+    <div id="search-results" class="track-list"></div>
+  {% endif %}
+{% endblock %}

@@ -14,10 +14,8 @@ class Track(models.Model):
 
     def __str__(self):
         return f"{self.artist} — {self.title}"
-    
-    
 
-
+   
 class Playlist(models.Model):
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
